@@ -4,6 +4,7 @@ import { ItemRepository } from './item.repository'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Item } from './item.entity'
 import { ItemStatus } from './item-status.enum'
+import { GetItemsFilterDto } from './dto/get-items-filter.dto'
 
 @Injectable()
 export class ItemsService {
@@ -11,6 +12,10 @@ export class ItemsService {
     @InjectRepository(ItemRepository)
     private itemRepository: ItemRepository,
   ) {}
+
+  async getAllItems(filterDto: GetItemsFilterDto): Promise<Item[]> {
+    return this.itemRepository.getAllItems(filterDto)
+  }
 
   async getItemById(id: number): Promise<Item> {
     const found = await this.itemRepository.findOne(id)
@@ -37,7 +42,7 @@ export class ItemsService {
     const item = await this.getItemById(id)
     item.status = status
     await item.save()
-    // console.log('updateItemStatus', status)
+
     return item
   }
 }
