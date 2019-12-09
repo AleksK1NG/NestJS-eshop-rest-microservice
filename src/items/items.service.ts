@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { ISItem, ItemStatus } from './item.model'
 import * as uuid from 'uuid/v1'
 import { CreateItemDto } from './dto/create-item.dto'
+import { GetItemsFilterDto } from './dto/get-items-filter.dto'
 
 @Injectable()
 export class ItemsService {
@@ -9,6 +10,23 @@ export class ItemsService {
 
   getAllItems(): ISItem[] {
     return this.items
+  }
+
+  getAllItemWithFilters(filterDto: GetItemsFilterDto): ISItem[] {
+    const { search, status } = filterDto
+    let result = this.items
+
+    if (status) {
+      result = this.items.filter((item) => item.status === status)
+      return result
+    }
+
+    if (search) {
+      result = this.items.filter((item) => item.title.includes(search) || item.description.includes(search))
+      return result
+    }
+
+    return result
   }
 
   createItem(createItemDto: CreateItemDto): ISItem {
