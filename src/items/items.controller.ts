@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common'
 import { ItemsService } from './items.service'
 import { ISItem } from './item.model'
+import { CreateItemDto } from './dto/create-item.dto'
 
 @Controller('items')
 export class ItemsController {
@@ -13,9 +14,8 @@ export class ItemsController {
   }
 
   @Post()
-  createItem(@Body() body: ISItem) {
-    console.log(body)
-    const { description, title, price } = body
-    return this.itemsService.createItem(title, description, price)
+  createItem(@Body() createItemDto: CreateItemDto) {
+    console.log(createItemDto)
+    return this.itemsService.createItem(createItemDto)
   }
 }
