@@ -4,12 +4,8 @@ import { ItemStatus } from '../item-status.enum'
 export class ItemStatusValidationPipe implements PipeTransform {
   readonly allowedStatuses: ItemStatus[] = [ItemStatus.InStock, ItemStatus.OutOfStock, ItemStatus.Sale]
 
-  transform(value: string, metadata: ArgumentMetadata): any {
-    value = value.toUpperCase()
-    console.log(value)
-    console.log(metadata)
-
-    if (!this.isStatusValid(value)) {
+  transform(value: any, metadata: ArgumentMetadata): any {
+    if (!this.isStatusValid(value.toUpperCase())) {
       throw new BadRequestException(`${value} is not valid status`)
     }
 

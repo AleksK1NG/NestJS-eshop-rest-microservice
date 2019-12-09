@@ -3,6 +3,7 @@ import { CreateItemDto } from './dto/create-item.dto'
 import { ItemRepository } from './item.repository'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Item } from './item.entity'
+import { ItemStatus } from './item-status.enum'
 
 @Injectable()
 export class ItemsService {
@@ -32,66 +33,11 @@ export class ItemsService {
     }
   }
 
-  // getAllItems(): ISItem[] {
-  //   return this.items
-  // }
-  //
-  // getAllItemWithFilters(filterDto: GetItemsFilterDto): ISItem[] {
-  //   const { search, status } = filterDto
-  //   let result = this.items
-  //
-  //   if (status) {
-  //     result = this.items.filter((item) => item.status === status)
-  //     return result
-  //   }
-  //
-  //   if (search) {
-  //     result = this.items.filter((item) => item.title.includes(search) || item.description.includes(search))
-  //     return result
-  //   }
-  //
-  //   return result
-  // }
-  //
-  // createItem(createItemDto: CreateItemDto): ISItem {
-  //   const { title, description, price } = createItemDto
-  //   const item: ISItem = {
-  //     id: uuid(),
-  //     title,
-  //     description,
-  //     price,
-  //     status: ItemStatus.InStock,
-  //   }
-  //
-  //   this.items.push(item)
-  //
-  //   return item
-  // }
-  //
-  // getItemById(id: string): ISItem {
-  //   const found = this.items.find((item) => item.id === id)
-  //   if (!found) {
-  //     throw new NotFoundException(`Task with ${id} id not found`)
-  //   }
-  //   return found
-  // }
-  //
-  // deleteItem(id: string): boolean {
-  //   const found = this.items.find((item) => item.id === id)
-  //   if (!found) {
-  //     throw new NotFoundException(`Task with ${id} id not found`)
-  //   }
-  //   this.items = this.items.filter((item) => item.id !== id)
-  //   return true
-  // }
-  //
-  // updateItemStatus(id: string, status: ItemStatus) {
-  //   const found = this.items.find((item) => item.id === id)
-  //   if (!found) {
-  //     throw new NotFoundException(`Task with ${id} id not found`)
-  //   }
-  //
-  //   found.status = status
-  //   return found
-  // }
+  async updateItemStatus(id: number, status: ItemStatus): Promise<Item> {
+    const item = await this.getItemById(id)
+    item.status = status
+    await item.save()
+    // console.log('updateItemStatus', status)
+    return item
+  }
 }
