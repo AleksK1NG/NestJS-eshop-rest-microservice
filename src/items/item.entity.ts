@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { ItemStatus } from './item.model'
+import { ItemStatus } from './item-status.enum'
 
 @Entity()
 export class Item extends BaseEntity {
@@ -18,4 +18,3 @@ export class Item extends BaseEntity {
   @Column()
   status: ItemStatus
 }
-
