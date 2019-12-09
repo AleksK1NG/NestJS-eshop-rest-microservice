@@ -27,7 +27,16 @@ export class ItemsService {
   }
 
   getItemById(id: string): ISItem {
-    const item = this.items.find((item) => item.id === id)
-    return item
+    const found = this.items.find((item) => item.id === id)
+    return found
+  }
+
+  deleteItem(id: string): boolean {
+    const found = this.items.find((item) => item.id === id)
+    if (!found) {
+      return false
+    }
+    this.items = this.items.filter((item) => item.id !== id)
+    return true
   }
 }
