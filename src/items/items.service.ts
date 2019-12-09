@@ -25,4 +25,9 @@ export class ItemsService {
 
     return item
   }
+
+  getItemById(id: string): ISItem {
+    const item = this.items.find((item) => item.id === id)
+    return item
+  }
 }

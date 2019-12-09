@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common'
 import { ItemsService } from './items.service'
 import { ISItem } from './item.model'
 import { CreateItemDto } from './dto/create-item.dto'
@@ -11,6 +11,11 @@ export class ItemsController {
   getAllItems(@Req() req): ISItem[] {
     console.log(req.url)
     return this.itemsService.getAllItems()
+  }
+
+  @Get('/:id')
+  getItemById(@Param('id') id: string) {
+    return this.itemsService.getItemById(id)
   }
 
   @Post()
