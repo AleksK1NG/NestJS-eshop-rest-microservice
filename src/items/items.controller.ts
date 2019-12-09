@@ -22,14 +22,14 @@ export class ItemsController {
   getItemById(@Param('id', ParseIntPipe) id: number): Promise<Item> {
     return this.itemsService.getItemById(id)
   }
-  //
-  // @Post()
-  // @UsePipes(ValidationPipe)
-  // createItem(@Body() createItemDto: CreateItemDto) {
-  //   console.log(createItemDto)
-  //   return this.itemsService.createItem(createItemDto)
-  // }
-  //
+
+  @Post()
+  @UsePipes(ValidationPipe)
+  createItem(@Body() createItemDto: CreateItemDto): Promise<Item> {
+    console.log(createItemDto)
+    return this.itemsService.createItem(createItemDto)
+  }
+
   // @Delete('/:id')
   // deleteItem(@Param('id') id: string) {
   //   return this.itemsService.deleteItem(id)
