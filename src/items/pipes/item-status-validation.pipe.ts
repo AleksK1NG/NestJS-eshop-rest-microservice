@@ -1,5 +1,5 @@
 import { ArgumentMetadata, BadRequestException, PipeTransform } from '@nestjs/common'
-import { ItemStatus } from '../item.model'
+import { ItemStatus } from '../item-status.enum'
 
 export class ItemStatusValidationPipe implements PipeTransform {
   readonly allowedStatuses: ItemStatus[] = [ItemStatus.InStock, ItemStatus.OutOfStock, ItemStatus.Sale]
