@@ -24,6 +24,14 @@ export class ItemsService {
     return this.itemRepository.createItem(createItemDto)
   }
 
+  async deleteItem(id: number): Promise<void> {
+    const result = await this.itemRepository.delete(id)
+
+    if (result.affected === 0) {
+      throw new NotFoundException(`Item with id ${id} not found`)
+    }
+  }
+
   // getAllItems(): ISItem[] {
   //   return this.items
   // }

@@ -18,4 +18,9 @@ export class ItemRepository extends Repository<Item> {
 
     return item
   }
+
+
+  async deleteItem(id: number): Promise<void> {
+
+  }
 }
