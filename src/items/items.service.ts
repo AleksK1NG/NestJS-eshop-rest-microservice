@@ -55,7 +55,7 @@ export class ItemsService {
   deleteItem(id: string): boolean {
     const found = this.items.find((item) => item.id === id)
     if (!found) {
-      return false
+      throw new NotFoundException(`Task with ${id} id not found`)
     }
     this.items = this.items.filter((item) => item.id !== id)
     return true
@@ -64,7 +64,7 @@ export class ItemsService {
   updateItemStatus(id: string, status: ItemStatus) {
     const found = this.items.find((item) => item.id === id)
     if (!found) {
-      return null
+      throw new NotFoundException(`Task with ${id} id not found`)
     }
 
     found.status = status
