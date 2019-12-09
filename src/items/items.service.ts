@@ -39,4 +39,14 @@ export class ItemsService {
     this.items = this.items.filter((item) => item.id !== id)
     return true
   }
+
+  updateItemStatus(id: string, status: ItemStatus) {
+    const found = this.items.find((item) => item.id === id)
+    if (!found) {
+      return null
+    }
+
+    found.status = status
+    return found
+  }
 }

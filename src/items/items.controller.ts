@@ -1,6 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Req } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common'
 import { ItemsService } from './items.service'
-import { ISItem } from './item.model'
+import { ISItem, ItemStatus } from './item.model'
 import { CreateItemDto } from './dto/create-item.dto'
 
 @Controller('items')
@@ -27,5 +27,10 @@ export class ItemsController {
   @Delete('/:id')
   deleteItem(@Param('id') id: string) {
     return this.itemsService.deleteItem(id)
+  }
+
+  @Patch('/:id')
+  updateItemStatus(@Param('id') id: string, @Body('status') status: ItemStatus) {
+    return this.itemsService.updateItemStatus(id, status)
   }
 }
