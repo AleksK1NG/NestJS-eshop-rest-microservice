@@ -10,15 +10,11 @@ import { ItemStatus } from './item-status.enum'
 export class ItemsController {
   constructor(private itemsService: ItemsService) {}
 
-  // @Get()
-  // getAllItems(@Query() filterDto: GetItemsFilterDto): ISItem[] {
-  //   if (Object.keys(filterDto).length) {
-  //     return this.itemsService.getAllItemWithFilters(filterDto)
-  //   } else {
-  //     return this.itemsService.getAllItems()
-  //   }
-  // }
-  //
+  @Get()
+  getAllItems(@Query() filterDto: GetItemsFilterDto): Promise<Item[]> {
+    return this.itemsService.getAllItems(filterDto)
+  }
+
   @Get('/:id')
   getItemById(@Param('id', ParseIntPipe) id: number): Promise<Item> {
     return this.itemsService.getItemById(id)
