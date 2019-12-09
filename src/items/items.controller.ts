@@ -3,6 +3,7 @@ import { ItemsService } from './items.service'
 import { ISItem, ItemStatus } from './item.model'
 import { CreateItemDto } from './dto/create-item.dto'
 import { GetItemsFilterDto } from './dto/get-items-filter.dto'
+import { ItemStatusValidationPipe } from './pipes/item-status-validation.pipe'
 
 @Controller('items')
 export class ItemsController {
@@ -35,7 +36,7 @@ export class ItemsController {
   }
 
   @Patch('/:id/status')
-  updateItemStatus(@Param('id') id: string, @Body('status') status: ItemStatus) {
+  updateItemStatus(@Param('id') id: string, @Body('status', ItemStatusValidationPipe) status: ItemStatus) {
     return this.itemsService.updateItemStatus(id, status)
   }
 }
