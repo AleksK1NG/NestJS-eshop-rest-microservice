@@ -3,7 +3,6 @@ import { CreateItemDto } from './dto/create-item.dto'
 import { ItemRepository } from './item.repository'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Item } from './item.entity'
-import { ItemStatus } from './item-status.enum'
 
 @Injectable()
 export class ItemsService {
@@ -22,17 +21,7 @@ export class ItemsService {
   }
 
   async createItem(createItemDto: CreateItemDto): Promise<Item> {
-    const { title, description, price } = createItemDto
-
-    const item = new Item()
-    item.title = title
-    item.price = price
-    item.description = description
-    item.status = ItemStatus.Sale
-
-    await item.save()
-
-    return item
+    return this.itemRepository.createItem(createItemDto)
   }
 
   // getAllItems(): ISItem[] {
