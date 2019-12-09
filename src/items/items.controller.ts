@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, UsePipes, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UsePipes, ValidationPipe } from '@nestjs/common'
 import { ItemsService } from './items.service'
 import { CreateItemDto } from './dto/create-item.dto'
 import { GetItemsFilterDto } from './dto/get-items-filter.dto'
 import { ItemStatusValidationPipe } from './pipes/item-status-validation.pipe'
+import { Item } from './item.entity'
 
 @Controller('items')
 export class ItemsController {
@@ -17,10 +18,10 @@ export class ItemsController {
   //   }
   // }
   //
-  // @Get('/:id')
-  // getItemById(@Param('id') id: string) {
-  //   return this.itemsService.getItemById(id)
-  // }
+  @Get('/:id')
+  getItemById(@Param('id', ParseIntPipe) id: number): Promise<Item> {
+    return this.itemsService.getItemById(id)
+  }
   //
   // @Post()
   // @UsePipes(ValidationPipe)

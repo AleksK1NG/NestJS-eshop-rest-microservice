@@ -1,9 +1,25 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common'
 import { CreateItemDto } from './dto/create-item.dto'
 import { GetItemsFilterDto } from './dto/get-items-filter.dto'
+import { ItemRepository } from './item.repository'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Item } from './item.entity'
 
 @Injectable()
 export class ItemsService {
+  constructor(
+    @InjectRepository(ItemRepository)
+    private itemRepository: ItemRepository,
+  ) {}
+
+  async getItemById(id: number): Promise<Item> {
+    const found = await this.itemRepository.findOne(id)
+    if (!found) {
+      throw new NotFoundException(`Item with id ${id} not found`)
+    }
+
+    return found
+  }
 
   // getAllItems(): ISItem[] {
   //   return this.items
