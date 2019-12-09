@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { ISItem, ItemStatus } from './item.model'
 import * as uuid from 'uuid/v1'
 import { CreateItemDto } from './dto/create-item.dto'
@@ -46,6 +46,9 @@ export class ItemsService {
 
   getItemById(id: string): ISItem {
     const found = this.items.find((item) => item.id === id)
+    if (!found) {
+      throw new NotFoundException(`Task with ${id} id not found`)
+    }
     return found
   }
 

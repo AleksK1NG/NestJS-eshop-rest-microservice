@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, UsePipes, ValidationPipe } from '@nestjs/common'
 import { ItemsService } from './items.service'
 import { ISItem, ItemStatus } from './item.model'
 import { CreateItemDto } from './dto/create-item.dto'
@@ -23,6 +23,7 @@ export class ItemsController {
   }
 
   @Post()
+  @UsePipes(ValidationPipe)
   createItem(@Body() createItemDto: CreateItemDto) {
     console.log(createItemDto)
     return this.itemsService.createItem(createItemDto)
