@@ -30,10 +30,10 @@ export class ItemsController {
     return this.itemsService.createItem(createItemDto)
   }
 
-  // @Delete('/:id')
-  // deleteItem(@Param('id') id: string) {
-  //   return this.itemsService.deleteItem(id)
-  // }
+  @Delete('/:id')
+  deleteItem(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.itemsService.deleteItem(id)
+  }
   //
   // @Patch('/:id/status')
   // updateItemStatus(@Param('id') id: string, @Body('status', ItemStatusValidationPipe) status: ItemStatus) {
