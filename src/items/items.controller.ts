@@ -4,6 +4,7 @@ import { CreateItemDto } from './dto/create-item.dto'
 import { GetItemsFilterDto } from './dto/get-items-filter.dto'
 import { ItemStatusValidationPipe } from './pipes/item-status-validation.pipe'
 import { Item } from './item.entity'
+import { ItemStatus } from './item-status.enum'
 
 @Controller('items')
 export class ItemsController {
@@ -34,9 +35,10 @@ export class ItemsController {
   deleteItem(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.itemsService.deleteItem(id)
   }
-  //
-  // @Patch('/:id/status')
-  // updateItemStatus(@Param('id') id: string, @Body('status', ItemStatusValidationPipe) status: ItemStatus) {
-  //   return this.itemsService.updateItemStatus(id, status)
-  // }
+
+  @Patch('/:id/status')
+  updateItemStatus(@Param('id', ParseIntPipe) id: number, @Body('status') status: ItemStatus, @Body() body): Promise<Item> {
+    console.log('updateItemStatus controller', status)
+    return this.itemsService.updateItemStatus(id, status)
+  }
 }
