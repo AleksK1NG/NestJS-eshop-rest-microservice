@@ -3,13 +3,17 @@ import { Item } from './item.entity'
 import { CreateItemDto } from './dto/create-item.dto'
 import { ItemStatus } from './item-status.enum'
 import { GetItemsFilterDto } from './dto/get-items-filter.dto'
+import { User } from '../auth/user.entity'
 
 @EntityRepository(Item)
 export class ItemRepository extends Repository<Item> {
-  async getAllItems(filterDto: GetItemsFilterDto): Promise<Item[]> {
+  async getAllItems(filterDto: GetItemsFilterDto, user: User): Promise<Item[]> {
     const { search, status } = filterDto
 
     const query = this.createQueryBuilder('item')
+    if (user && user.id) {
+      query.where('item.userId = :userId', { userId: user.id })
+    }
 
     // where overwrite, andWhere add next one
     if (status) {
@@ -26,7 +30,7 @@ export class ItemRepository extends Repository<Item> {
     return items
   }
 
-  async createItem(createItemDto: CreateItemDto): Promise<Item> {
+  async createItem(createItemDto: CreateItemDto, user: User): Promise<Item> {
     const { title, description, price } = createItemDto
 
     const item = new Item()
@@ -34,8 +38,11 @@ export class ItemRepository extends Repository<Item> {
     item.price = price
     item.description = description
     item.status = ItemStatus.Sale
+    item.user = user
 
     await item.save()
+
+    delete item.user
 
     return item
   }
