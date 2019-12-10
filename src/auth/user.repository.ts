@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt'
 import { EntityRepository, Repository } from 'typeorm'
 import { User } from './user.entity'
 import { AuthCredentialsDto } from './dto/auth-credentials.dto'
@@ -9,8 +10,9 @@ export class UserRepository extends Repository<User> {
     const { username, email, password } = authCredentialsDto
 
     const user = new User()
+    user.salt = await bcrypt.genSalt()
+    user.password = await this.hashPassword(password, user.salt)
     user.email = email
-    user.password = password
     user.username = username
 
     try {
@@ -24,5 +26,9 @@ export class UserRepository extends Repository<User> {
         throw new InternalServerErrorException()
       }
     }
+  }
+
+  private async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt)
   }
 }
