@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Patch, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common'
 import { ItemsService } from './items.service'
 import { CreateItemDto } from './dto/create-item.dto'
 import { GetItemsFilterDto } from './dto/get-items-filter.dto'
@@ -12,11 +12,14 @@ import { GetUser } from '../auth/get-user.decorator'
 @Controller('items')
 // @UseGuards(AuthGuard())
 export class ItemsController {
+  private logger = new Logger('ItemsController')
+
   constructor(private itemsService: ItemsService) {}
 
   @Get()
   @UseGuards(AuthGuard())
   getAllItems(@Query() filterDto: GetItemsFilterDto, @GetUser() user: User): Promise<Item[]> {
+    this.logger.verbose(`User ${user.email} retrieving all items, ${JSON.stringify(filterDto)}`)
     return this.itemsService.getAllItems(filterDto, user)
   }
 
