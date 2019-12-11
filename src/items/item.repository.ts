@@ -4,9 +4,12 @@ import { CreateItemDto } from './dto/create-item.dto'
 import { ItemStatus } from './item-status.enum'
 import { GetItemsFilterDto } from './dto/get-items-filter.dto'
 import { User } from '../auth/user.entity'
+import { InternalServerErrorException, Logger } from '@nestjs/common'
 
 @EntityRepository(Item)
 export class ItemRepository extends Repository<Item> {
+  private logger = new Logger('ItemRepository')
+
   async getAllItems(filterDto: GetItemsFilterDto, user: User): Promise<Item[]> {
     const { search, status } = filterDto
 
@@ -25,9 +28,13 @@ export class ItemRepository extends Repository<Item> {
       query.andWhere('item.title LIKE :search OR item.description LIKE :search', { search: `%${search}%` })
     }
 
-    const items = await query.getMany()
-
-    return items
+    try {
+      const items = await query.getMany()
+      return items
+    } catch (error) {
+      this.logger.error(`Failed to get items, error: ${error} `)
+      throw new InternalServerErrorException()
+    }
   }
 
   async createItem(createItemDto: CreateItemDto, user: User): Promise<Item> {
@@ -40,10 +47,15 @@ export class ItemRepository extends Repository<Item> {
     item.status = ItemStatus.Sale
     item.user = user
 
-    await item.save()
+    try {
+      await item.save()
 
-    delete item.user
+      delete item.user
 
-    return item
+      return item
+    } catch (error) {
+      this.logger.error(`Failed to create item, error: ${error} `)
+      throw new InternalServerErrorException()
+    }
   }
 }
