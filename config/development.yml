@@ -1,0 +1,15 @@
+server:
+  port: 3000
+
+db:
+  host: 'localhost'
+  username: 'postgres'
+  password: 'postgres'
+  type: 'postgres'
+  port: 5432
+  database: 'itemsmicroservice'
+  synchronize: true
+
+jwt:
+  expiresIn: 3600
+  secret: 'superSecretJWT'
